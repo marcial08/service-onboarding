@@ -13,7 +13,6 @@ export const hello = async (req: Request<unknown, unknown, unknown, unknown>, re
       data: {
         message: 'hello world',
         fecha: new Date().toLocaleString('en-US'),
-        tiempo_expiracion: config.JWT_TIME_EXPIRY,
         version: config.AUTH_VERSION
       }
     })
