@@ -1,13 +1,14 @@
 import { z } from 'zod'
 
-export const PostGuardarAgendaSchema = z.object({
+export const PostModificarAgendaSchema = z.object({
   body: z
     .object({
-      metodo: z.literal('guardarAgenda', { invalid_type_error: 'Error de dato' }),
+      metodo: z.literal('modificarAgenda', { invalid_type_error: 'Error de dato' }),
       Usuario: z
         .string()
         .min(3, { message: 'Debe tener entre 3 a 5 caracteres' })
         .max(5, { message: 'Debe tener entre 3 a 5 caracteres' }),
+      CodCliente: z.number(),
       TipoCliente: z.number(),
       PrimerNombre: z.string(),
       SegundoNombre: z.string(),
@@ -64,4 +65,4 @@ export const PostGuardarAgendaSchema = z.object({
     .strict()
 })
 
-export type GuardarAgendaSchemaType = z.infer<typeof PostGuardarAgendaSchema>['body']
+export type ModificarAgendaSchemaType = z.infer<typeof PostModificarAgendaSchema>['body']

@@ -11,6 +11,10 @@ import { eliminarAgenda } from '../controllers/eliminar-agenda.controller'
 import { PostEliminarAgendaSchema } from '../schemas/eliminar-agenda.schema'
 import { PostRegistroAgendaSchema } from '../schemas/registro-agenda.schema'
 import { registroAgendaCompleto } from '../controllers/registro-agenda.controller'
+import { PostGuardarAgendaSchema } from '../schemas/guardar-agenda.schema'
+import { guardarAgenda } from '../controllers/guardar-agenda.controller'
+import { modificarAgenda } from '../controllers/modificar-agenda.controller'
+import { PostModificarAgendaSchema } from '../schemas/modificar-agenda.schema'
 
 const router = Router()
 
@@ -19,8 +23,8 @@ router.post('/hello', hello)
 
 router.post('/inicio_sesion', schemaValition(PostInicioSesionSchema), inicioSesion)
 router.post('/traer_version', schemaValition(PostTraerVersionSchema), taerVersion)
-router.post('/guardar_agenda')
-router.post('/modifica_agenda')
+router.post('/guardar_agenda', schemaValition(PostGuardarAgendaSchema), guardarAgenda)
+router.post('/modificar_agenda', schemaValition(PostModificarAgendaSchema), modificarAgenda)
 router.post('/eliminar_agenda', schemaValition(PostEliminarAgendaSchema), eliminarAgenda)
 router.post('/consulta_agenda', inicioSesion)
 router.post('/registro_agenda_completo', schemaValition(PostRegistroAgendaSchema), registroAgendaCompleto)
