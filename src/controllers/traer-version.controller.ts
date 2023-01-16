@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
-import { InicioSesionSchemaType } from '../schemas/inicio-sesion.schema'
 import { postOnboarding } from '../api/onboarding.api'
+import config from '../util/config'
 
-// * Inicio de sesión
-export const inicioSesion = async (req: Request, res: Response) => {
+// * Traer version
+export const taerVersion = async (req: Request, res: Response) => {
   try {
-    const response = await postOnboarding(req.body, 'ENDPOINT_INICIO_SESION')
+    req.body.token = config.TOKEN
+    const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_VERSION')
     console.log(response.data)
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,

@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 //* Router
-app.use('/api/onboardingRoutes', onboardingRoutes)
+app.use('/api/onboarding', onboardingRoutes)
 // app.use('/api/users', userRoutes)
 
 export default app
