@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const PostTraerVersionCajaSchema = z.object({
+export const PostTraerMaestroCajaSchema = z.object({
   body: z
     .object({
       metodo: z.literal('traerVersionMaestroCajaAhorro'),
@@ -12,4 +12,4 @@ export const PostTraerVersionCajaSchema = z.object({
     .strict()
 })
 
-export type TraerVersionCajaSchemaType = z.infer<typeof PostTraerVersionCajaSchema>['body']
+export type TraerMaestroCajaSchemaType = z.infer<typeof PostTraerMaestroCajaSchema>['body']
