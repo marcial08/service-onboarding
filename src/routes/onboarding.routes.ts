@@ -18,7 +18,7 @@ import { PostModificarAgendaSchema } from '../schemas/modificar-agenda.schema'
 import { PostConsultarAgendaSchema } from '../schemas/consultar-agenda.schema'
 import { PostBuscarClienteSchema } from '../schemas/buscar-cliente.schema'
 import { PostTraerVersionCajaSchema } from '../schemas/traer-maestro-caja.schema'
-import { taerVersionCaja } from '../controllers/traer-version-caja.controller'
+import { taerVersionCaja } from '../controllers/traer-maestro-caja.controller'
 
 const router = Router()
 
