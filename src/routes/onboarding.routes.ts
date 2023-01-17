@@ -15,27 +15,29 @@ import { PostGuardarAgendaSchema } from '../schemas/guardar-agenda.schema'
 import { guardarAgenda } from '../controllers/guardar-agenda.controller'
 import { modificarAgenda } from '../controllers/modificar-agenda.controller'
 import { PostModificarAgendaSchema } from '../schemas/modificar-agenda.schema'
+import { PostConsultarAgendaSchema } from '../schemas/consultar-agenda.schema'
+import { PostBuscarClienteSchema } from '../schemas/buscar-cliente.schema'
+import { PostTraerVersionCajaSchema } from '../schemas/traer-maestro-caja.schema'
+import { taerVersionCaja } from '../controllers/traer-version-caja.controller'
 
 const router = Router()
 
 router.post('/hello', hello)
-// router.post('/signup', schemaValition(AuthSingUpSchema), signUp)
 
 router.post('/inicio_sesion', schemaValition(PostInicioSesionSchema), inicioSesion)
 router.post('/traer_version', schemaValition(PostTraerVersionSchema), taerVersion)
 router.post('/guardar_agenda', schemaValition(PostGuardarAgendaSchema), guardarAgenda)
 router.post('/modificar_agenda', schemaValition(PostModificarAgendaSchema), modificarAgenda)
 router.post('/eliminar_agenda', schemaValition(PostEliminarAgendaSchema), eliminarAgenda)
-router.post('/consulta_agenda', inicioSesion)
+router.post('/consultar_agenda', schemaValition(PostConsultarAgendaSchema), consultarAgenda)
 router.post('/registro_agenda_completo', schemaValition(PostRegistroAgendaSchema), registroAgendaCompleto)
-router.post('/busqueda_cliente', buscarCliente)
-router.post('/traer_maestro_ahorro')
-router.post('/consultar_maestro_ahorro')
+router.post('/busqueda_cliente', schemaValition(PostBuscarClienteSchema), buscarCliente)
+router.post('/traer_maestro_c_ahorro', schemaValition(PostTraerVersionCajaSchema), taerVersionCaja)
+router.post('/consultar_maestro_cahorro')
 router.post('/guardar_maestro_caja')
 router.post('/imprimir_registro_ahorro')
 router.post('/revertir_caja_ahorro')
 router.post('/')
 router.post('/')
-router.post('/consultar_agenda', consultarAgenda)
 
 export default router
