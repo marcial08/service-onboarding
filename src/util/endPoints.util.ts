@@ -13,6 +13,6 @@ export const onboardingEndPoint: any = {
   ENDPOINT_CONSULTAR_MAESTRO_C: config.URL_ONBOARDING + 'cam305_mws.php',
   ENDPOINT_GUARDAR_MAESTRO_C: config.URL_ONBOARDING + 'cam305_mws.php',
   ENDPOINT_IMPRIMIR_REGISTRO_C: config.URL_ONBOARDING + 'cam305_mws.php',
-  ENDPOINT_REVERTIR_CAJA: config.URL_ONBOARDING + 'cam305_mws.php',
+  ENDPOINT_REVERTIR_C: config.URL_ONBOARDING + 'cam305_mws.php',
   ENDPOINT_: config.URL_ONBOARDING + ''
 }
