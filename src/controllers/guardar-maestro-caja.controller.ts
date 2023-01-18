@@ -6,7 +6,7 @@ import config from '../util/config'
 // * Guardar version maestro caja ahorro
 export const guardarMaestroCaja = async (req: Request, res: Response) => {
   try {
-    req.body.token = config.TOKEN
+    req.body.token = process.env.TOKEN
     const response = await postOnboarding(req.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
     console.log(response.data)
     return res.status(200).json({

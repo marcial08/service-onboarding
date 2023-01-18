@@ -6,7 +6,7 @@ import config from '../util/config'
 // * Eliminar Agenda
 export const eliminarAgenda = async (req: Request, res: Response) => {
   try {
-    req.body.token = config.TOKEN
+    req.body.token = process.env.TOKEN
     const response = await postOnboarding(req.body, 'ENDPOINT_ELIMINAR')
     console.log(response.data)
     return res.status(200).json({

@@ -7,7 +7,7 @@ import config from '../util/config'
 // * Consultar Agenda
 export const consultarAgenda = async (req: Request, res: Response) => {
   try {
-    req.body.token = config.TOKEN
+    req.body.token = process.env.TOKEN
     const response = await postOnboarding(req.body, 'ENDPOINT_CONSULTA_AGENDA')
     console.log(response.data)
     return res.status(200).json({
