@@ -8,7 +8,6 @@ import messageUtil from '../util/message.util'
 export const hello = async (req: Request<unknown, unknown, unknown, unknown>, res: Response) => {
   try {
     process.env.TOKEN = 'token'
-    console.log('tokennnnnnnnnnnnn', process.env.TOKEN)
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,
       status: messageUtil.STATUS_OK,

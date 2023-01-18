@@ -1,4 +1,4 @@
-FROM node:lts-alpine 
+FROM node:18-alpine
 
 WORKDIR /api
 
@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build
 
 
-EXPOSE 3000
+EXPOSE 4000
 
 
 

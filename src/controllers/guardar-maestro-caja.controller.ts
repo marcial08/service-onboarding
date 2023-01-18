@@ -8,7 +8,7 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
   try {
     req.body.token = process.env.TOKEN
     const response = await postOnboarding(req.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
-    console.log(response.data)
+    // console.log(response.data)
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,
       status: messageUtil.STATUS_OK,
