@@ -15,9 +15,7 @@ export const PostRegistroAgendaSchema = z.object({
       SegundoApe: z.string(),
       TercerApe: z.string(),
       Genero: z.number(),
-      FechaNac: z.string().regex(/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/, {
-        message: 'Fecha invalido (formato correcto dd/mm/aa)'
-      }),
+      FechaNac: z.string(),
       Nacionalidad: z.string(),
       Profesion: z.number(),
       NivelEdu: z.number(),
@@ -26,12 +24,8 @@ export const PostRegistroAgendaSchema = z.object({
       Complemento: z.string().max(2),
       NacOrigen: z.string().max(2),
       NroRuc: z.string(),
-      FechaVenc: z.string().regex(/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/, {
-        message: 'Fecha invalido (formato correcto dd/mm/aa)'
-      }),
-      FechaVencRuc: z.string().regex(/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/, {
-        message: 'Fecha invalido (formato correcto dd/mm/aa)'
-      }),
+      FechaVenc: z.string(),
+      FechaVencRuc: z.string(),
       CodCiiu: z.number(),
       Categoria: z.string(),
       TelfDom: z.string(),
@@ -46,12 +40,8 @@ export const PostRegistroAgendaSchema = z.object({
       EstCivil: z.number(),
       NombreCompleto: z.string(),
       NroNit: z.string(),
-      VencNit: z.string().regex(/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/, {
-        message: 'Fecha invalido (formato correcto dd/mm/aa)'
-      }),
-      FechaConstitucion: z.string().regex(/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/, {
-        message: 'Fecha invalido (formato correcto dd/mm/aa)'
-      }),
+      VencNit: z.string(),
+      FechaConstitucion: z.string(),
       CodRubro: z.number(),
       CodSector: z.number(),
       Actividad: z.number(),
