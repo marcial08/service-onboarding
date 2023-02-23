@@ -6,7 +6,7 @@ import config from '../util/config'
 // * Modificar Agenda
 export const modificarAgenda = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN
+    req.body.token = process.env.TOKEN_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_MODIFICA_AGENDA')
     // console.log(response.data)
     return res.status(200).json({

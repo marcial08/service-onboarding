@@ -6,7 +6,7 @@ import config from '../util/config'
 // * Traer version
 export const taerVersion = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN
+    req.body.token = process.env.TOKEN_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_VERSION')
     // console.log(response.data)
     return res.status(200).json({

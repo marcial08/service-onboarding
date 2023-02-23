@@ -7,7 +7,7 @@ import config from '../util/config'
 // * Consultar Agenda
 export const buscarCliente = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN
+    req.body.token = process.env.TOKEN_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_BUSQUEDA_CLIENTE')
     // console.log(response.data)
     return res.status(200).json({
