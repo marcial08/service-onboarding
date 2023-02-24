@@ -8,7 +8,8 @@ export const inicioSesion = async (req: Request, res: Response) => {
   try {
     const response = await postOnboarding(req.body, 'ENDPOINT_INICIO_SESION')
     // console.log(response.data)
-    process.env.TOKEN = response.data.token
+    req.body.token = process.env.TOKEN_ONBOARDING
+    req.body.Usuario = process.env.USER_ONBOARDING
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,
       status: messageUtil.STATUS_OK,

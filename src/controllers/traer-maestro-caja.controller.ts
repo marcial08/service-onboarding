@@ -7,6 +7,7 @@ import config from '../util/config'
 export const taerMaestroCaja = async (req: Request, res: Response) => {
   try {
     req.body.token = process.env.TOKEN_ONBOARDING
+    req.body.Usuario = process.env.USER_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_MAESTRO_C')
     // console.log(response.data)
     return res.status(200).json({
