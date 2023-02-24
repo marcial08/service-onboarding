@@ -1,0 +1,32 @@
+const varDefault = {
+  TipoCliente: 1,
+  SegundoNombre: '',
+  TercerApe: '',
+  Nacionalidad: 'BOLIVIA',
+  Profesion: '',
+  NivelEdu: '',
+  TipoDoc: 1,
+  Complemento: '',
+  NacOrigen: '',
+  NroRuc: '',
+  FechaVencRuc: '',
+  CodCiiu: '',
+  Categoria: '',
+  TelfOfi: '',
+  TelfCasilla: '',
+  Tipo: '',
+  NroCasilla: '',
+  NroNit: '',
+  VencNit: '',
+  FechaConstitucion: '',
+  CodRubro: '',
+  CodSector: '',
+  Actividad: '',
+  AdicionalNac: '',
+  NacDesc: '',
+  FormaLlegada: '',
+  RepLegal: '',
+  RepLegalDesc: ''
+}
+
+export default varDefault
