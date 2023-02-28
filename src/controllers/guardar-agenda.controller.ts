@@ -36,11 +36,8 @@ const constructorAgenda = (req: any) => {
   req.body.TipoCliente = varDefault.TipoCliente
   req.body.SegundoNombre = varDefault.SegundoNombre
   req.body.Nacionalidad = varDefault.Nacionalidad
-  req.body.Profesion = varDefault.Profesion
   req.body.NivelEdu = varDefault.NivelEdu
   req.body.TipoDoc = varDefault.TipoDoc
-  req.body.Complemento = varDefault.Complemento
-  req.body.NacOrigen = varDefault.NacOrigen
   req.body.NroRuc = varDefault.NroRuc
   req.body.FechaVencRuc = varDefault.FechaVencRuc
   req.body.CodCiiu = varDefault.CodCiiu
@@ -48,6 +45,8 @@ const constructorAgenda = (req: any) => {
   req.body.TelfOfi = varDefault.TelfOfi
   req.body.TelfCasilla = varDefault.TelfCasilla
   req.body.Tipo = varDefault.Tipo
+  req.body.Ciudad = varDefault.Ciudad
+  req.body.Correspondencia = varDefault.Correspondencia
   req.body.NroCasilla = varDefault.NroCasilla
   req.body.NroNit = varDefault.NroNit
   req.body.VencNit = varDefault.VencNit
