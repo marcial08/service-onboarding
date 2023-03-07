@@ -28,3 +28,45 @@ const varDefault = {
 }
 
 export default varDefault
+
+export const varDefaulGuardarMaestroCaja = {
+  tipoCuenta: '1',
+  codigoMoneda: '1',
+  codigoManejo: '1',
+  codigoFirma_1: '1',
+  claseFirma_1: '',
+  codigoFirma_2: '0',
+  claseFirma_2: '0',
+  codigoFirma_3: '0',
+  claseFirma_3: '0',
+  codigoFirma_4: '0',
+  claseFirma_4: '0',
+  codigoFirma_5: '0',
+  claseFirma_5: '0',
+  codigoFirma_6: '0',
+  claseFirma_6: '0',
+  codigoFirma_7: '0',
+  claseFirma_7: '0',
+  codigoFirma_8: '0',
+  claseFirma_8: '0',
+  codigoFirma_9: '0',
+  claseFirma_9: '0',
+  codigoFirma_10: '0',
+  claseFirma_10: '0',
+  marcaRetencionIVA: 'S',
+  instructivo: '',
+  codigoAgencia: '1', // dato para modificar
+  codigoUso: '1',
+  codigoTitulares_1: '',
+  codigoTitulares_2: '0',
+  codigoTitulares_3: '0',
+  codigoTitulares_4: '0',
+  codigoTitulares_5: '0',
+  codigoTitulares_6: '0',
+  codigoTitulares_7: '0',
+  codigoTitulares_8: '0',
+  codigoTitulares_9: '0',
+  codigoTitulares_10: '0',
+  codigoOficialCredito: '99608', // dato para modificar
+  codigoMotivoApertura: '1'
+}
