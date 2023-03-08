@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
-import { postOnboarding } from '../api/onboarding.api'
+import { postInformix, postOnboarding } from '../api/onboarding.api'
 import { varDefaulGuardarMaestroCaja } from '../util/variablesDefault'
 
 // * Guardar version maestro caja ahorro
@@ -9,18 +9,27 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
     req.body.token = process.env.TOKEN_ONBOARDING
     req.body.Usuario = process.env.USER_ONBOARDING
 
-    let dataReq = constructorMaestro(req)
-    const dataBody = dataReq.body
-    console.log(dataBody)
+    let pIdeDepartamento = Number(req.body.idDepartamento)
+    if (pIdeDepartamento <= 9 && pIdeDepartamento >= 1) {
+      let dataReq = constructorMaestro(req)
 
-    const response = await postOnboarding(dataReq.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
+      const reqBodyFinal = await aramadoReqQuery(dataReq)
+      const response = await postOnboarding(reqBodyFinal.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
 
-    // console.log(response.data)
-    return res.status(200).json({
-      mensaje: messageUtil.MENSAJE_CORRECTO,
-      status: messageUtil.STATUS_OK,
-      data: response.data.data ? response.data.data : response.data
-    })
+      // console.log(response.data)
+      return res.status(200).json({
+        mensaje: messageUtil.MENSAJE_CORRECTO,
+        status: messageUtil.STATUS_OK,
+        data: response.data.data ? response.data.data : response.data
+      })
+    } else {
+      // console.log(response.data)
+      return res.status(200).json({
+        mensaje: messageUtil.MENSAJE_CORRECTO,
+        status: messageUtil.STATUS_OK,
+        data: { message: 'El campo idDepartamento debe ser entre 1 a 9' }
+      })
+    }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({
@@ -39,6 +48,7 @@ const constructorMaestro = (req: any) => {
   req.body.token = process.env.TOKEN_ONBOARDING
   req.body.Usuario = process.env.USER_ONBOARDING
 
+  req.body.metodo = varDefaulGuardarMaestroCaja.metodo
   req.body.tipoCuenta = varDefaulGuardarMaestroCaja.tipoCuenta
   req.body.codigoMoneda = varDefaulGuardarMaestroCaja.codigoMoneda
   req.body.codigoManejo = varDefaulGuardarMaestroCaja.codigoManejo
@@ -79,5 +89,28 @@ const constructorMaestro = (req: any) => {
   req.body.codigoOficialCredito = varDefaulGuardarMaestroCaja.codigoOficialCredito
   req.body.codigoMotivoApertura = varDefaulGuardarMaestroCaja.codigoMotivoApertura
 
+  return req
+}
+
+const aramadoReqQuery = async (req: any) => {
+  const { idDepartamento } = req.body
+  let sql1 = {
+    dataSql: [`select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}`]
+  }
+  let sql2 = {
+    dataSql: [
+      `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = (select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}) and adusrmrcb = 0`
+    ]
+  }
+  // const resSQL1 = await postInformix(sql1)
+  // const resSQL2 = await postInformix(sql2)
+  // const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].oficina : ''
+  // const dataSQL2 = resSQL2.data[0].data.length > 0 ? resSQL2.data[0].data[0].firma_atencion_cliente : ''
+
+  const dataSQL1 = '28'
+  const dataSQL2 = '99639'
+
+  req.body.codigoAgencia = dataSQL1
+  req.body.codigoOficialCredito = dataSQL2
   return req
 }

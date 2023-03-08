@@ -30,6 +30,7 @@ const varDefault = {
 export default varDefault
 
 export const varDefaulGuardarMaestroCaja = {
+  metodo: 'guardarMaestroCajaAhorro',
   tipoCuenta: '1',
   codigoMoneda: '1',
   codigoManejo: '1',

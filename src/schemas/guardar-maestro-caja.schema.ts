@@ -3,12 +3,13 @@ import { z } from 'zod'
 export const PostGuardarMaestroCajaSchema = z.object({
   body: z
     .object({
-      metodo: z.literal('guardarMaestroCajaAhorro'),
+      metodo: z.string(),
       Usuario: z
         .string()
         .min(3, { message: 'Debe tener entre 3 a 5 caracteres' })
         .max(5, { message: 'Debe tener entre 3 a 5 caracteres' }),
       codigoCliente: z.string(),
+      idDepartamento: z.string(),
       tipoCuenta: z.string(),
       codigoMoneda: z.string(),
       codigoManejo: z.string(),
