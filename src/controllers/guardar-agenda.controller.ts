@@ -10,13 +10,21 @@ export const guardarAgenda = async (req: Request, res: Response) => {
     req.body.Usuario = process.env.USER_ONBOARDING
 
     let dataReq = constructorAgenda(req)
-    const response = await postOnboarding(dataReq.body, 'ENDPOINT_GUARDAR_AGENDA')
-    // console.log(response.data)
-    return res.status(200).json({
-      mensaje: messageUtil.MENSAJE_CORRECTO,
-      status: messageUtil.STATUS_OK,
-      data: response.data.data ? response.data.data : response.data
-    })
+    let validaType = validarAgenda(dataReq)
+    if (validaType.sw) {
+      const response = await postOnboarding(dataReq.body, 'ENDPOINT_GUARDAR_AGENDA')
+      return res.status(200).json({
+        mensaje: messageUtil.MENSAJE_CORRECTO,
+        status: messageUtil.STATUS_OK,
+        data: response.data.data ? response.data.data : response.data
+      })
+    } else {
+      return res.status(200).json({
+        mensaje: validaType.message,
+        status: messageUtil.STATUS_NOK,
+        data: {}
+      })
+    }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({
@@ -60,4 +68,78 @@ const constructorAgenda = (req: any) => {
   req.body.RepLegal = varDefault.RepLegal
   req.body.RepLegalDesc = varDefault.RepLegalDesc
   return req
+}
+
+const validarAgenda = (req: any) => {
+  const {
+    PrimerNombre,
+    PrimerApe,
+    Genero,
+    FechaNac,
+    Profesion,
+    NroDoc,
+    FechaVenc,
+    TelfDom,
+    DirDomicilio,
+    Email,
+    EstCivil,
+    NombreCompleto
+  } = req.body
+
+  let sw = true
+  let message = 'El/los campo(s)'
+
+  if (PrimerNombre === '') {
+    message += ', PrimerNombre'
+    sw = false
+  }
+  if (PrimerApe === '') {
+    message += ', PrimerApe'
+    sw = false
+  }
+  if (Genero === '') {
+    message += ', Genero'
+    sw = false
+  }
+  if (FechaNac === '') {
+    message += ', FechaNac'
+    sw = false
+  }
+  if (Profesion === '') {
+    message += ', Profesion'
+    sw = false
+  }
+  if (NroDoc === '') {
+    message += ', NroDoc'
+    sw = false
+  }
+  if (FechaVenc === '') {
+    message += ', FechaVenc'
+    sw = false
+  }
+  if (TelfDom === '') {
+    message += ', TelfDom'
+    sw = false
+  }
+  if (DirDomicilio === '') {
+    message += ', DirDomicilio'
+    sw = false
+  }
+  if (Email === '') {
+    message += ', Email'
+    sw = false
+  }
+  if (EstCivil === '') {
+    message += ', EstCivil'
+    sw = false
+  }
+  if (NombreCompleto === '') {
+    message += ', NombreCompleto'
+    sw = false
+  }
+  message += ' son requerido(s).'
+  return {
+    sw,
+    message
+  }
 }
