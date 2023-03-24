@@ -102,13 +102,10 @@ const aramadoReqQuery = async (req: any) => {
       `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = (select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}) and adusrmrcb = 0`
     ]
   }
-  // const resSQL1 = await postInformix(sql1)
-  // const resSQL2 = await postInformix(sql2)
-  // const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].oficina : ''
-  // const dataSQL2 = resSQL2.data[0].data.length > 0 ? resSQL2.data[0].data[0].firma_atencion_cliente : ''
-
-  const dataSQL1 = '28'
-  const dataSQL2 = '99639'
+  const resSQL1 = await postInformix(sql1)
+  const resSQL2 = await postInformix(sql2)
+  const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].oficina : ''
+  const dataSQL2 = resSQL2.data[0].data.length > 0 ? resSQL2.data[0].data[0].firma_atencion_cliente : ''
 
   req.body.codigoAgencia = dataSQL1
   req.body.codigoOficialCredito = dataSQL2
