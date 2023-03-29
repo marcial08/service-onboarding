@@ -13,8 +13,10 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
     if (pIdeDepartamento <= 9 && pIdeDepartamento >= 1) {
       let dataReq = constructorMaestro(req)
 
-      const reqBodyFinal = await aramadoReqQuery(dataReq)
+      const reqBodyFinal = await armadoReqQuery(dataReq)
       const response = await postOnboarding(reqBodyFinal.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
+      await registraQuery(req, response)
+      await setCodigoPlaza(req, response)
 
       // console.log(response.data)
       return res.status(200).json({
@@ -92,7 +94,7 @@ const constructorMaestro = (req: any) => {
   return req
 }
 
-const aramadoReqQuery = async (req: any) => {
+const armadoReqQuery = async (req: any) => {
   const { idDepartamento } = req.body
   let sql1 = {
     dataSql: [`select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}`]
@@ -110,4 +112,76 @@ const aramadoReqQuery = async (req: any) => {
   req.body.codigoAgencia = dataSQL1
   req.body.codigoOficialCredito = dataSQL2
   return req
+}
+
+const registraQuery = async (req: any, res: any) => {
+  const { codigoCliente, idDepartamento } = req.body
+
+  let sqlQuery_1 = {
+    dataSql: [`select obpincemp from obpin where obpincemp = ${codigoCliente}`]
+  }
+  let sqlInsert_1 = {
+    dataSql: [
+      `insert into obpin(obpincemp,obpincage,obpinnpin,obpinuser,obpinhora,obpinfpro,obpinngen) values (${codigoCliente},${codigoCliente},'70510022','WEB',current::datetime hour to SECOND,TODAY,(select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}))`
+    ]
+  }
+
+  let sqlQuery_2 = {
+    dataSql: [`select obprccage from obprc where obprccage = ${codigoCliente}`]
+  }
+  let sqlInsert_2 = {
+    dataSql: [
+      `insert into obprc(obprcnsol,obprccage,obprcapod,obprcperf,obprcmodn,obprcstat,obprcuser,obprchora,obprcfpro)values((select max(obprcnsol)+1 from obprc),${codigoCliente},${codigoCliente},'A',28,1,'WEB',current::datetime hour to SECOND,TODAY)`
+    ]
+  }
+
+  let sqlQuery_3 = {
+    dataSql: [`select obctocage from obcto where obctocage = ${codigoCliente}`]
+  }
+  let sqlInsert_3 = {
+    dataSql: [
+      `insert into obcto(obctocage,obctoapod,obctoncto,obctofcto,obctofvto,obctostat,obctomrcb,obctouser,obctohora,obctofpro) values (${codigoCliente},${codigoCliente},(SELECT max(SUBSTR(obctoncto, 1, 7) || (SELECT max(LPAD(CAST((SELECT max(SUBSTR(ob.obctoncto, LENGTH(ob.obctoncto)-7, 5)) FROM obcto as ob) AS INTEGER) + 1, LENGTH('0000'), '0')) AS nuevo_numero FROM obcto) || '-' || SUBSTR(obctoncto, 13, 3)) AS nuevo_campo FROM obcto),(select gbpmtfdia from gbpmt),'',0,0,'WEB',current::datetime hour to SECOND,TODAY)`
+    ]
+  }
+
+  let sqlQuery_4 = {
+    dataSql: [`select obmaxcage from obmax where obmaxcage = ${codigoCliente}`]
+  }
+  let sqlInsert_4 = {
+    dataSql: [
+      `insert into obmax(obmaxcage,obmaxapod,obmaxctrd,obmaxttrd,obmaxctrp,obmaxttrp,obmaxdesc,obmaxdctr,obmaxdttr,obmaxpctr,obmaxpttr,obmaxfipe,obmaxmrcb,obmaxuser,obmaxhora,obmaxfpro) values (${codigoCliente},${codigoCliente},9999,68000,9999,9999999999,'PARAMETRIZACION DE LIMITES DE TRANSFERENCIAS',0,0,0,0,(select gbpmtfdia from gbpmt),0,'WEB',current::datetime hour to SECOND,TODAY)`
+    ]
+  }
+
+  // Consulta
+  const resQuerySQL1 = await postInformix(sqlQuery_1)
+  if (resQuerySQL1.data[0].data.length === 0) {
+    const resSQL1 = await postInformix(sqlInsert_1)
+  }
+
+  const resQuerySQL2 = await postInformix(sqlQuery_2)
+  if (resQuerySQL2.data[0].data.length === 0) {
+    const resSQL2 = await postInformix(sqlInsert_2)
+  }
+
+  const resQuerySQL3 = await postInformix(sqlQuery_3)
+  if (resQuerySQL3.data[0].data.length === 0) {
+    const resSQL3 = await postInformix(sqlInsert_3)
+  }
+
+  const resQuerySQL4 = await postInformix(sqlQuery_4)
+  if (resQuerySQL4.data[0].data.length === 0) {
+    const resSQL4 = await postInformix(sqlInsert_4)
+  }
+}
+
+const setCodigoPlaza = async (req: any, res: any) => {
+  const { codigoCliente } = req.body
+  let sql1 = {
+    dataSql: [`select gbagecage||gbageplaz as codplaza from gbage where gbagecage = ${codigoCliente} and gbagemrcb = 0`]
+  }
+  const resSQL1 = await postInformix(sql1)
+  const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].codplaza : ''
+
+  res.data.codClientePlaza = dataSQL1
 }

@@ -10,8 +10,4 @@ const httpsAgent = new https.Agent({
 export const postOnboarding = async (pReq: object, enpoint: string) =>
   await axios.post(onboardingEndPoint[enpoint], pReq, { httpsAgent })
 
-export const postInformix = async (pReq: object) => {
-  const dataEnpoint = config.URL_INFORMIX
-  console.log(dataEnpoint)
-  return await axios.post(config.URL_INFORMIX, pReq, { httpsAgent })
-}
+export const postInformix = async (pReq: object) => await axios.post(config.URL_INFORMIX, pReq, { httpsAgent })
