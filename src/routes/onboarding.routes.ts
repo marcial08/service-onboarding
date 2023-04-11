@@ -27,6 +27,8 @@ import { PostImprimirRegistroCajaSchema } from '../schemas/imprimir-registro-caj
 import { imprimirRegistroCaja } from '../controllers/imprimir-registro-caja.controller'
 import { PostRevertirCajaSchema } from '../schemas/revertir-caja-ahorro.schema'
 import { revertirCaja } from '../controllers/revertir-caja-ahorro.controller'
+import { PostDetalleTranSchema } from '../schemas/detalle-transacciones'
+import { detalleTransacciones } from '../controllers/detalle-transacciones'
 
 const router = Router()
 
@@ -45,5 +47,8 @@ router.post('/consultar_caja_ahorro', schemaValition(PostConsultaMaestroCajaSche
 router.post('/guardar_caja_ahorro', schemaValition(PostGuardarMaestroCajaSchema), guardarMaestroCaja)
 router.post('/imprimir_registro_caja_ahorro', schemaValition(PostImprimirRegistroCajaSchema), imprimirRegistroCaja)
 router.post('/revertir_caja_ahorro', schemaValition(PostRevertirCajaSchema), revertirCaja)
+
+// * Mov. detale de transacciones
+router.post('/detalle_transacciones', schemaValition(PostDetalleTranSchema), detalleTransacciones)
 
 export default router
