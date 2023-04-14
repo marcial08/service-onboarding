@@ -4,7 +4,8 @@ export const PostDetalleTranSchema = z.object({
   body: z
     .object({
       codigoCliente: z.string(),
-      cantidad: z.string()
+      fechaInicio: z.string(),
+      fechaFinal: z.string()
     })
     .strict()
 })
