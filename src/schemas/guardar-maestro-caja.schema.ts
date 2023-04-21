@@ -10,6 +10,8 @@ export const PostGuardarMaestroCajaSchema = z.object({
         .max(5, { message: 'Debe tener entre 3 a 5 caracteres' }),
       codigoCliente: z.string(),
       idDepartamento: z.string(),
+      cuentaReferido: z.string(), // ? campo nuevo
+      codigoClienteReferido: z.string(), // ? campo nuevo
       tipoCuenta: z.string(),
       codigoMoneda: z.string(),
       codigoManejo: z.string(),

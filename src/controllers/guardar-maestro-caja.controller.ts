@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
-import { postInformix, postOnboarding } from '../api/onboarding.api'
+import { postInformix, postOnboarding, postServices } from '../api/onboarding.api'
 import { varDefaulGuardarMaestroCaja } from '../util/variablesDefault'
 
 // * Guardar version maestro caja ahorro
@@ -15,8 +15,26 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
 
       const reqBodyFinal = await armadoReqQuery(dataReq)
       const response = await postOnboarding(reqBodyFinal.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
+
+      if (response.data.error !== 0) {
+        return res.status(500).json({
+          mensaje: messageUtil.MENSAJE_ERROR,
+          estado: messageUtil.STATUS_NOK,
+          data: {
+            error: response.data.msj
+          }
+        })
+      }
+
       await registraQuery(req, response)
       await setCodigoPlaza(req, response)
+      let pData = {
+        pCodigoCliente: req.body.codigoCliente,
+        pNumeroCuenta: response.data.nroTransaccionGenerado
+      }
+      await consumeOpenAPI(pData)
+
+      await recompensaReferido(req.body)
 
       // console.log(response.data)
       return res.status(200).json({
@@ -184,4 +202,32 @@ const setCodigoPlaza = async (req: any, res: any) => {
   const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].codplaza : ''
 
   res.data.codClientePlaza = dataSQL1
+}
+
+// * Metodo para consumir el servicio openapi
+const consumeOpenAPI = async (pData: any) => {
+  const { pCodigoCliente, pNumeroCuenta } = pData
+
+  const dataReq = {
+    codigo_servicio: '',
+    codigo_cliente: pCodigoCliente,
+    importe: '',
+    glosa: '',
+    numero_cuenta: pNumeroCuenta,
+    origen_fondo: '',
+    destino_fondo: ''
+  }
+  const response = await postServices(dataReq, 'ENDPOINT_ABONO_CUENTA_VIA')
+  console.log(response)
+}
+
+const recompensaReferido = async (pData: any) => {
+  const { codigoClienteReferido, cuentaReferido } = pData
+
+  if (codigoClienteReferido !== '' && cuentaReferido !== '') {
+    await consumeOpenAPI({
+      pCodigoCliente: codigoClienteReferido,
+      pNumeroCuenta: cuentaReferido
+    })
+  }
 }

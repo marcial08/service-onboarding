@@ -16,3 +16,6 @@ export const onboardingEndPoint: any = {
   ENDPOINT_REVERTIR_C: config.URL_ONBOARDING + 'cam305_mws.php',
   ENDPOINT_: config.URL_ONBOARDING + ''
 }
+export const openapiEndPoint: any = {
+  ENDPOINT_ABONO_CUENTA_VIA: config.URL_SERVICE_OPENAPI + 'api/openapi/abono_cuenta_via'
+}
