@@ -12,7 +12,5 @@ export const postOnboarding = async (pReq: object, enpoint: string) =>
 
 export const postInformix = async (pReq: object) => await axios.post(config.URL_INFORMIX, pReq, { httpsAgent })
 
-export const postServices = async (pReq: object, enpoint: string) => {
-  const end = openapiEndPoint[enpoint]
-  return await axios.post(openapiEndPoint[enpoint], pReq, { httpsAgent })
-}
+export const postServices = async (pReq: object, enpoint: string) =>
+  await axios.post(openapiEndPoint[enpoint], pReq, { httpsAgent })

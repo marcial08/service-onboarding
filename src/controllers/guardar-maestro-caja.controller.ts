@@ -32,15 +32,22 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
         pCodigoCliente: req.body.codigoCliente,
         pNumeroCuenta: response.data.nroTransaccionGenerado
       }
-      await consumeOpenAPI(pData)
 
-      await recompensaReferido(req.body)
+      // ? Referido
+      let msjReferido = []
+      const mjsOne = await consumeOpenAPI(pData)
+      const mjsTwo = await recompensaReferido(req.body)
+      msjReferido.push(mjsOne)
+      if (mjsTwo) {
+        msjReferido.push(mjsTwo)
+      }
 
       // console.log(response.data)
       return res.status(200).json({
         mensaje: messageUtil.MENSAJE_CORRECTO,
         status: messageUtil.STATUS_OK,
-        data: response.data.data ? response.data.data : response.data
+        data: response.data.data ? response.data.data : response.data,
+        msjReferido: msjReferido
       })
     } else {
       // console.log(response.data)
@@ -218,16 +225,18 @@ const consumeOpenAPI = async (pData: any) => {
     destino_fondo: ''
   }
   const response = await postServices(dataReq, 'ENDPOINT_ABONO_CUENTA_VIA')
-  console.log(response)
+  const msjConsumo = `Transacción exitoso (${response.data.data.numero_transaccion}) con codCliente ${pCodigoCliente} y nro de cuenta ${pNumeroCuenta}.`
+  return msjConsumo
 }
 
 const recompensaReferido = async (pData: any) => {
   const { codigoClienteReferido, cuentaReferido } = pData
 
   if (codigoClienteReferido !== '' && cuentaReferido !== '') {
-    await consumeOpenAPI({
+    return await consumeOpenAPI({
       pCodigoCliente: codigoClienteReferido,
       pNumeroCuenta: cuentaReferido
     })
   }
+  return null
 }
