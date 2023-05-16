@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
 import { postInformix, postOnboarding, postServices } from '../api/onboarding.api'
 import { varDefaulGuardarMaestroCaja } from '../util/variablesDefault'
+import config from '../util/config'
 
 // * Guardar version maestro caja ahorro
 export const guardarMaestroCaja = async (req: Request, res: Response) => {
@@ -175,7 +176,7 @@ const registraQuery = async (req: any, res: any) => {
   }
   let sqlInsert_4 = {
     dataSql: [
-      `insert into obmax(obmaxcage,obmaxapod,obmaxctrd,obmaxttrd,obmaxctrp,obmaxttrp,obmaxdesc,obmaxdctr,obmaxdttr,obmaxpctr,obmaxpttr,obmaxfipe,obmaxmrcb,obmaxuser,obmaxhora,obmaxfpro) values (${codigoCliente},${codigoCliente},9999,68000,9999,9999999999,'PARAMETRIZACION DE LIMITES DE TRANSFERENCIAS',0,0,0,0,(select gbpmtfdia from gbpmt),0,'WEB',current::datetime hour to SECOND,TODAY)`
+      `insert into obmax(obmaxcage,obmaxapod,obmaxctrd,obmaxttrd,obmaxctrp,obmaxttrp,obmaxdesc,obmaxdctr,obmaxdttr,obmaxpctr,obmaxpttr,obmaxfipe,obmaxmrcb,obmaxuser,obmaxhora,obmaxfpro) values (${codigoCliente},${codigoCliente},${config.VAR_TRANSFER_DIA},${config.VAR_IMPORTE_DIA},${config.VAR_TRANSFER_PERIODO},${config.VAR_IMPORTE_PERIODO},'PARAMETRIZACION DE LIMITES DE TRANSFERENCIAS',0,0,0,0,(select gbpmtfdia from gbpmt),0,'WEB',current::datetime hour to SECOND,TODAY)`
     ]
   }
 
