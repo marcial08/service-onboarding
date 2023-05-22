@@ -6,7 +6,6 @@ import config from '../util/config'
 // * Consultar version maestro caja ahorro
 export const consultarMaestroCaja = async (req: Request, res: Response) => {
   try {
-    console.log('test')
     req.body.token = process.env.TOKEN_ONBOARDING
     req.body.Usuario = process.env.USER_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_CONSULTAR_MAESTRO_C')
