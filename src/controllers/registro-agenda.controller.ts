@@ -8,6 +8,9 @@ export const registroAgendaCompleto = async (req: Request, res: Response) => {
   try {
     req.body.token = process.env.TOKEN_ONBOARDING
     req.body.Usuario = process.env.USER_ONBOARDING
+    req.body.CodAgencia = 3;
+    req.body.CodPlaza = 20;
+
     const response = await postOnboarding(req.body, 'ENDPOINT_REGISTRO_AGENDA_COMPLETO')
     // console.log(response.data)
     return res.status(200).json({
