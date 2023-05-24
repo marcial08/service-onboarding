@@ -10,8 +10,7 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
     req.body.token = process.env.TOKEN_ONBOARDING
     req.body.Usuario = process.env.USER_ONBOARDING
 
-    let pIdeDepartamento = Number(req.body.idDepartamento)
-    if (pIdeDepartamento <= 9 && pIdeDepartamento >= 1) {
+    
       let dataReq = constructorMaestro(req)
 
       const reqBodyFinal = await armadoReqQuery(dataReq)
@@ -51,14 +50,6 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
         data: response.data.data ? response.data.data : response.data,
         msjReferido: msjReferido
       })
-    } else {
-      // console.log(response.data)
-      return res.status(200).json({
-        mensaje: messageUtil.MENSAJE_CORRECTO,
-        status: messageUtil.STATUS_OK,
-        data: { message: 'El campo idDepartamento debe ser entre 1 a 9' }
-      })
-    }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({
@@ -123,20 +114,21 @@ const constructorMaestro = (req: any) => {
 
 const armadoReqQuery = async (req: any) => {
   const { idDepartamento } = req.body
-  let sql1 = {
-    dataSql: [`select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}`]
-  }
+  // let sql1 = {
+  //   dataSql: [`select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}`]
+  // }
   let sql2 = {
     dataSql: [
-      `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = (select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}) and adusrmrcb = 0`
+      // `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = (select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}) and adusrmrcb = 0`
+      `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = 3 and adusrmrcb = 0`
     ]
   }
-  const resSQL1 = await postInformix(sql1)
+  // const resSQL1 = await postInformix(sql1)
   const resSQL2 = await postInformix(sql2)
-  const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].oficina : ''
+  // const dataSQL1 = resSQL1.data[0].data.length > 0 ? resSQL1.data[0].data[0].oficina : ''
   const dataSQL2 = resSQL2.data[0].data.length > 0 ? resSQL2.data[0].data[0].firma_atencion_cliente : ''
 
-  req.body.codigoAgencia = dataSQL1
+  // req.body.codigoAgencia = dataSQL1
   req.body.codigoOficialCredito = dataSQL2
   return req
 }
@@ -149,7 +141,7 @@ const registraQuery = async (req: any, res: any) => {
   }
   let sqlInsert_1 = {
     dataSql: [
-      `insert into obpin(obpincemp,obpincage,obpinnpin,obpinuser,obpinhora,obpinfpro,obpinngen) values (${codigoCliente},${codigoCliente},'70510022','WEB',current::datetime hour to SECOND,TODAY,(select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}))`
+      `insert into obpin(obpincemp,obpincage,obpinnpin,obpinuser,obpinhora,obpinfpro,obpinngen) values (${codigoCliente},${codigoCliente},'70510022','API',current::datetime hour to SECOND,TODAY,(select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}))`
     ]
   }
 
@@ -158,7 +150,7 @@ const registraQuery = async (req: any, res: any) => {
   }
   let sqlInsert_2 = {
     dataSql: [
-      `insert into obprc(obprcnsol,obprccage,obprcapod,obprcperf,obprcmodn,obprcstat,obprcuser,obprchora,obprcfpro)values((select max(obprcnsol)+1 from obprc),${codigoCliente},${codigoCliente},'A',28,1,'WEB',current::datetime hour to SECOND,TODAY)`
+      `insert into obprc(obprcnsol,obprccage,obprcapod,obprcperf,obprcmodn,obprcstat,obprcuser,obprchora,obprcfpro)values((select max(obprcnsol)+1 from obprc),${codigoCliente},${codigoCliente},'A',28,1,'API',current::datetime hour to SECOND,TODAY)`
     ]
   }
 
@@ -167,7 +159,7 @@ const registraQuery = async (req: any, res: any) => {
   }
   let sqlInsert_3 = {
     dataSql: [
-      `insert into obcto(obctocage,obctoapod,obctoncto,obctofcto,obctofvto,obctostat,obctomrcb,obctouser,obctohora,obctofpro) values (${codigoCliente},${codigoCliente},(SELECT max(SUBSTR(obctoncto, 1, 7) || (SELECT max(LPAD(CAST((SELECT max(SUBSTR(ob.obctoncto, LENGTH(ob.obctoncto)-7, 5)) FROM obcto as ob) AS INTEGER) + 1, LENGTH('0000'), '0')) AS nuevo_numero FROM obcto) || '-' || SUBSTR(obctoncto, 13, 3)) AS nuevo_campo FROM obcto),(select gbpmtfdia from gbpmt),'',0,0,'WEB',current::datetime hour to SECOND,TODAY)`
+      `insert into obcto(obctocage,obctoapod,obctoncto,obctofcto,obctofvto,obctostat,obctomrcb,obctouser,obctohora,obctofpro) values (${codigoCliente},${codigoCliente},(SELECT max(SUBSTR(obctoncto, 1, 7) || (SELECT max(LPAD(CAST((SELECT max(SUBSTR(ob.obctoncto, LENGTH(ob.obctoncto)-7, 5)) FROM obcto as ob) AS INTEGER) + 1, LENGTH('0000'), '0')) AS nuevo_numero FROM obcto) || '-' || SUBSTR(obctoncto, 13, 3)) AS nuevo_campo FROM obcto),(select gbpmtfdia from gbpmt),'',0,0,'API',current::datetime hour to SECOND,TODAY)`
     ]
   }
 
@@ -176,7 +168,7 @@ const registraQuery = async (req: any, res: any) => {
   }
   let sqlInsert_4 = {
     dataSql: [
-      `insert into obmax(obmaxcage,obmaxapod,obmaxctrd,obmaxttrd,obmaxctrp,obmaxttrp,obmaxdesc,obmaxdctr,obmaxdttr,obmaxpctr,obmaxpttr,obmaxfipe,obmaxmrcb,obmaxuser,obmaxhora,obmaxfpro) values (${codigoCliente},${codigoCliente},${config.VAR_TRANSFER_DIA},${config.VAR_IMPORTE_DIA},${config.VAR_TRANSFER_PERIODO},${config.VAR_IMPORTE_PERIODO},'PARAMETRIZACION DE LIMITES DE TRANSFERENCIAS',0,0,0,0,(select gbpmtfdia from gbpmt),0,'WEB',current::datetime hour to SECOND,TODAY)`
+      `insert into obmax(obmaxcage,obmaxapod,obmaxctrd,obmaxttrd,obmaxctrp,obmaxttrp,obmaxdesc,obmaxdctr,obmaxdttr,obmaxpctr,obmaxpttr,obmaxfipe,obmaxmrcb,obmaxuser,obmaxhora,obmaxfpro) values (${codigoCliente},${codigoCliente},${config.VAR_TRANSFER_DIA},${config.VAR_IMPORTE_DIA},${config.VAR_TRANSFER_PERIODO},${config.VAR_IMPORTE_PERIODO},'PARAMETRIZACION DE LIMITES DE TRANSFERENCIAS',0,0,0,0,(select gbpmtfdia from gbpmt),0,'API',current::datetime hour to SECOND,TODAY)`
     ]
   }
 
