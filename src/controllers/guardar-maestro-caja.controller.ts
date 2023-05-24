@@ -219,6 +219,7 @@ const consumeOpenAPI = async (pData: any) => {
     origen_fondo: '',
     destino_fondo: ''
   }
+  console.log(dataReq);
   const response = await postServices(dataReq, 'ENDPOINT_ABONO_CUENTA_VIA')
   const msjConsumo = `Transacción exitoso (${response.data.data.numero_transaccion}) con codCliente ${pCodigoCliente} y nro de cuenta ${pNumeroCuenta}.`
   return msjConsumo
