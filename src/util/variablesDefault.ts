@@ -56,7 +56,7 @@ export const varDefaulGuardarMaestroCaja = {
   claseFirma_10: '0',
   marcaRetencionIVA: 'S',
   instructivo: '',
-  codigoAgencia: '1', // dato para modificar
+  codigoAgencia: '3', 
   codigoUso: '1',
   codigoTitulares_1: '',
   codigoTitulares_2: '0',
@@ -68,7 +68,7 @@ export const varDefaulGuardarMaestroCaja = {
   codigoTitulares_8: '0',
   codigoTitulares_9: '0',
   codigoTitulares_10: '0',
-  codigoOficialCredito: '99608', // dato para modificar
+  codigoOficialCredito: '', 
   codigoMotivoApertura: '1'
 }
 
