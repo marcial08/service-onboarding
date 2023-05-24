@@ -31,6 +31,7 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
       let pData = {
         pCodigoCliente: req.body.codigoCliente,
         pNumeroCuenta: response.data.nroTransaccionGenerado,
+        pImporte: config.VAR_IMPORTE_TITULAR,
         pGlosa: 'Recompensa por Apertura de Cuenta Titular'
       }
 
@@ -207,12 +208,12 @@ const setCodigoPlaza = async (req: any, res: any) => {
 
 // * Metodo para consumir el servicio openapi
 const consumeOpenAPI = async (pData: any) => {
-  const { pCodigoCliente, pNumeroCuenta, pGlosa } = pData
+  const { pCodigoCliente, pNumeroCuenta, pGlosa, pImporte } = pData
 
   const dataReq = {
     codigo_servicio: '',
     codigo_cliente: pCodigoCliente,
-    importe: '',
+    importe: pImporte,
     glosa: pGlosa,
     numero_cuenta: pNumeroCuenta,
     origen_fondo: '',
@@ -230,6 +231,7 @@ const recompensaReferido = async (pData: any) => {
     return await consumeOpenAPI({
       pCodigoCliente: codigoClienteReferido,
       pNumeroCuenta: cuentaReferido,
+      pImporte: config.VAR_IMPORTE_REFERIDO,
       pGlosa: 'Recompensa por Apertura de Cuenta Referido'
     })
   }
