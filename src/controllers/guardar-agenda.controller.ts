@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
 import { postOnboarding } from '../api/onboarding.api'
 import varDefault from '../util/variablesDefault'
+import { registerIdpscl } from './registro-agenda.controller'
 
 // * Guardar Agenda
 export const guardarAgenda = async (req: Request, res: Response) => {
@@ -13,6 +14,7 @@ export const guardarAgenda = async (req: Request, res: Response) => {
     let validaType = validarAgenda(dataReq)
     if (validaType.sw) {
       const response = await postOnboarding(dataReq.body, 'ENDPOINT_GUARDAR_AGENDA')
+      await registerIdpscl(response)
       return res.status(200).json({
         mensaje: messageUtil.MENSAJE_CORRECTO,
         status: messageUtil.STATUS_OK,

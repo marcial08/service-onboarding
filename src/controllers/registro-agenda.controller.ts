@@ -180,7 +180,7 @@ const validarAgendaCompleto = (req: any) => {
   }
 }
 
-const registerIdpscl = async (response: any) => {
+export const registerIdpscl = async (response: any) => {
   const codClienteRes = response.data.codcliente ? response.data.codcliente : null
 
   if (codClienteRes) {
