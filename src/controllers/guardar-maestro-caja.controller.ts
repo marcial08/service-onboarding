@@ -121,7 +121,7 @@ const armadoReqQuery = async (req: any) => {
   let sql2 = {
     dataSql: [
       // `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = (select max(gbofinofi) oficina from gbofi where gbofidpto = ${idDepartamento}) and adusrmrcb = 0`
-      `select max(adusrcage) firma_atencion_cliente from adusr where adusrperf = 'AC1' and adusragen = 3 and adusrmrcb = 0`
+      `select max(gbfircfun) from gbfir where gbfirccar = 76 and gbfirmrcb = 0 and gbfiragen = 3`
     ]
   }
   // const resSQL1 = await postInformix(sql1)
