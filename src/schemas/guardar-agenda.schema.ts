@@ -46,7 +46,9 @@ export const PostGuardarAgendaSchema = z.object({
       NacDesc: z.string(),
       FormaLlegada: z.string(),
       RepLegal: z.string(),
-      RepLegalDesc: z.string()
+      RepLegalDesc: z.string(),
+      Referencia: z.string(),
+      ContactoRefencia: z.string()
     })
     .strict()
 })

@@ -85,7 +85,8 @@ const validarAgenda = (req: any) => {
     DirDomicilio,
     Email,
     EstCivil,
-    NombreCompleto
+    NombreCompleto,
+   // Referencia,  ContactoRefencia
   } = req.body
 
   let sw = true
@@ -139,6 +140,14 @@ const validarAgenda = (req: any) => {
     message += ', NombreCompleto'
     sw = false
   }
+  // if (Referencia === '') {
+  //   message += ', Referencia'
+  //   sw = false
+  // }
+  // if (ContactoRefencia === '') {
+  //   message += ', ContactoRefencia'
+  //   sw = false
+  // }
   message += ' son requerido(s).'
   return {
     sw,
