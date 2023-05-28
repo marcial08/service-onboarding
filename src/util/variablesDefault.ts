@@ -128,3 +128,8 @@ export const varDefaultRegistraAgenda = {
   NroItem: '1',
   CodPost: ''
 }
+
+export const varDefaultLogin = {
+  metodo: 'IniciarSession',
+  IDispositivo: '0'
+}

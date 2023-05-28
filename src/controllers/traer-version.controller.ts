@@ -2,12 +2,18 @@ import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
 import { postOnboarding } from '../api/onboarding.api'
 import config from '../util/config'
+import { inicioSesion } from './inicio-sesion.controller'
+import { varDefaultLogin } from '../util/variablesDefault'
 
 // * Traer version
 export const taerVersion = async (req: Request, res: Response) => {
   try {
+    
+    let dataReq = constructorLogin();
+    const responseLogin = await inicioSesion(dataReq, res);
     req.body.token = process.env.TOKEN_ONBOARDING
-    req.body.Usuario = process.env.USER_ONBOARDING
+    req.body.Usuario = responseLogin.data.token
+    console.log('RESPUESTAAAAAAAAAAAAAAAAAAAAAAAA', req.body);
     const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_VERSION')
     // console.log(response.data)
     return res.status(200).json({
@@ -27,3 +33,14 @@ export const taerVersion = async (req: Request, res: Response) => {
     }
   }
 }
+const constructorLogin = () => {
+  const req: any = {}; 
+  req.body = {}; 
+  
+  req.body.metodo = varDefaultLogin.metodo;
+  req.body.Usuario = process.env.USER_ONBOARDING;
+  req.body.Clave = process.env.CLAVE_ONBOARDING;
+  req.body.IDispositivo = varDefaultLogin.IDispositivo;
+
+  return req;
+};
