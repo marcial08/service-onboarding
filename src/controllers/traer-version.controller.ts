@@ -11,8 +11,8 @@ export const taerVersion = async (req: Request, res: Response) => {
     
     let dataReq = constructorLogin();
     const responseLogin = await inicioSesion(dataReq, res);
-    req.body.token = process.env.TOKEN_ONBOARDING
-    req.body.Usuario = responseLogin.data.token
+    req.body.Usuario = process.env.USER_ONBOARDING
+    req.body.token = responseLogin.data.token
     console.log('RESPUESTAAAAAAAAAAAAAAAAAAAAAAAA', req.body);
     const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_VERSION')
     // console.log(response.data)
