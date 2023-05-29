@@ -3,11 +3,15 @@ import messageUtil from '../util/message.util'
 import { postInformix, postOnboarding, postServices } from '../api/onboarding.api'
 import { varDefaulGuardarMaestroCaja } from '../util/variablesDefault'
 import config from '../util/config'
+import { inicioSesion } from './inicio-sesion.controller'
 
 // * Guardar version maestro caja ahorro
 export const guardarMaestroCaja = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN_ONBOARDING
+    const responseLogin = await inicioSesion(res);
+    const { inicioCorrecto, token } = responseLogin;
+    if (inicioCorrecto) {
+    req.body.token = token
     req.body.Usuario = process.env.USER_ONBOARDING
 
     
@@ -52,6 +56,13 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
         data: response.data.data ? response.data.data : response.data,
         msjReferido: msjReferido
       })
+    }else{
+      return res.status(500).json({
+        mensaje: messageUtil.MENSAJE_AUTENTIFICACION_FALLO,
+        status: messageUtil.STATUS_NOK,
+        data: {}
+      })
+      }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({

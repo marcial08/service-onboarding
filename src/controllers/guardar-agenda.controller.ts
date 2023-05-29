@@ -3,11 +3,15 @@ import messageUtil from '../util/message.util'
 import { postOnboarding } from '../api/onboarding.api'
 import varDefault from '../util/variablesDefault'
 import { registerIdpscl } from './registro-agenda.controller'
+import { inicioSesion } from './inicio-sesion.controller'
 
 // * Guardar Agenda
 export const guardarAgenda = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN_ONBOARDING
+    const responseLogin = await inicioSesion(res);
+    const { inicioCorrecto, token } = responseLogin;
+    if (inicioCorrecto) {
+    req.body.token = token
     req.body.Usuario = process.env.USER_ONBOARDING
 
     let dataReq = constructorAgenda(req)
@@ -26,6 +30,13 @@ export const guardarAgenda = async (req: Request, res: Response) => {
         status: messageUtil.STATUS_NOK,
         data: {}
       })
+    }
+  }else{
+    return res.status(500).json({
+      mensaje: messageUtil.MENSAJE_AUTENTIFICACION_FALLO,
+      status: messageUtil.STATUS_NOK,
+      data: {}
+    })
     }
   } catch (error) {
     if (error instanceof Error) {

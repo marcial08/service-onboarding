@@ -1,26 +1,28 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
 import { postOnboarding } from '../api/onboarding.api'
-import config from '../util/config'
 import { inicioSesion } from './inicio-sesion.controller'
-import { varDefaultLogin } from '../util/variablesDefault'
 
 // * Traer version
 export const taerVersion = async (req: Request, res: Response) => {
   try {
-    
-    let dataReq = constructorLogin();
-    const responseLogin = await inicioSesion(dataReq, res);
-    req.body.Usuario = process.env.USER_ONBOARDING
-    req.body.token = responseLogin.data.token
-    console.log('RESPUESTAAAAAAAAAAAAAAAAAAAAAAAA', req.body);
+    const responseLogin = await inicioSesion(res);
+    const { inicioCorrecto, token } = responseLogin;
+    if (inicioCorrecto) {
+    req.body.token = token
     const response = await postOnboarding(req.body, 'ENDPOINT_TRAER_VERSION')
-    // console.log(response.data)
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,
       status: messageUtil.STATUS_OK,
       data: response.data.data ? response.data.data : response.data
     })
+  }else{
+    return res.status(500).json({
+      mensaje: messageUtil.MENSAJE_AUTENTIFICACION_FALLO,
+      status: messageUtil.STATUS_NOK,
+      data: {}
+    })
+    }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({
@@ -33,14 +35,3 @@ export const taerVersion = async (req: Request, res: Response) => {
     }
   }
 }
-const constructorLogin = () => {
-  const req: any = {}; 
-  req.body = {}; 
-  
-  req.body.metodo = varDefaultLogin.metodo;
-  req.body.Usuario = process.env.USER_ONBOARDING;
-  req.body.Clave = process.env.CLAVE_ONBOARDING;
-  req.body.IDispositivo = varDefaultLogin.IDispositivo;
-
-  return req;
-};

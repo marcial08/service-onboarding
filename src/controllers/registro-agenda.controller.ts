@@ -3,15 +3,16 @@ import messageUtil from '../util/message.util'
 import { postInformix, postOnboarding } from '../api/onboarding.api'
 import config from '../util/config'
 import { varDefaultRegistraAgenda } from '../util/variablesDefault'
+import { inicioSesion } from './inicio-sesion.controller'
 
 // * Registro agenda completo
 export const registroAgendaCompleto = async (req: Request, res: Response) => {
   try {
-    req.body.token = process.env.TOKEN_ONBOARDING
+    const responseLogin = await inicioSesion(res);
+    const { inicioCorrecto, token } = responseLogin;
+    if (inicioCorrecto) {
+    req.body.token = token
     req.body.Usuario = process.env.USER_ONBOARDING
-    // req.body.CodAgencia = 3
-    // req.body.CodPlaza = 20
-
     let dataReq = constructorAgendaCompleto(req)
     let validaType = validarAgendaCompleto(dataReq)
 
@@ -25,12 +26,20 @@ export const registroAgendaCompleto = async (req: Request, res: Response) => {
         status: messageUtil.STATUS_OK,
         data: response.data.data ? response.data.data : response.data
       })
+      
     } else {
       return res.status(200).json({
         mensaje: validaType.message,
         status: messageUtil.STATUS_NOK,
         data: {}
       })
+    }
+  }else{
+    return res.status(500).json({
+      mensaje: messageUtil.MENSAJE_AUTENTIFICACION_FALLO,
+      status: messageUtil.STATUS_NOK,
+      data: {}
+    })
     }
   } catch (error) {
     if (error instanceof Error) {
