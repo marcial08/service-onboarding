@@ -7,9 +7,9 @@ import { varDefaultLogin } from '../util/variablesDefault'
 export const inicioSesion = async (res: Response) => {
   try {
     let dataReq = constructorLogin();
+ 
     const response = await postOnboarding(dataReq.body, 'ENDPOINT_INICIO_SESION')
     const token = response?.data?.token;
-    
     const inicioCorrecto = !!token;
     return { inicioCorrecto, token };
   } catch (error) {

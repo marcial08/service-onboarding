@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
-import { postOnboarding } from '../api/onboarding.api'
+import { postInformix, postOnboarding } from '../api/onboarding.api'
 import varDefault from '../util/variablesDefault'
 import { registerIdpscl } from './registro-agenda.controller'
 import { inicioSesion } from './inicio-sesion.controller'
+import config from '../util/config'
 
 // * Guardar Agenda
 export const guardarAgenda = async (req: Request, res: Response) => {
@@ -12,13 +13,13 @@ export const guardarAgenda = async (req: Request, res: Response) => {
     const { inicioCorrecto, token } = responseLogin;
     if (inicioCorrecto) {
     req.body.token = token
-    req.body.Usuario = process.env.USER_ONBOARDING
-
+    req.body.Usuario = config.USER_ONBOARDING
     let dataReq = constructorAgenda(req)
     let validaType = validarAgenda(dataReq)
     if (validaType.sw) {
       const response = await postOnboarding(dataReq.body, 'ENDPOINT_GUARDAR_AGENDA')
       await registerIdpscl(response)
+      await updateDatosAdicionales(response.data.codcliente)
       return res.status(200).json({
         mensaje: messageUtil.MENSAJE_CORRECTO,
         status: messageUtil.STATUS_OK,
@@ -52,8 +53,6 @@ export const guardarAgenda = async (req: Request, res: Response) => {
 }
 
 const constructorAgenda = (req: any) => {
-  req.body.token = process.env.TOKEN_ONBOARDING
-  req.body.Usuario = process.env.USER_ONBOARDING
   req.body.TipoCliente = varDefault.TipoCliente
   req.body.SegundoNombre = varDefault.SegundoNombre
   req.body.Nacionalidad = varDefault.Nacionalidad
@@ -163,5 +162,22 @@ const validarAgenda = (req: any) => {
   return {
     sw,
     message
+  }
+}
+
+export const updateDatosAdicionales = async (codcliente: string) => {
+  
+  
+
+  const codClienteRes = codcliente? codcliente: null
+  
+  if (codClienteRes) {
+    let sql1 = {
+      dataSql: [
+        `update gbdac set gbdaccncn= 98, gbdacpaip=1 where gbdaccage = ${codClienteRes}`
+      ]
+    }
+    console.log('datos de token ', sql1);
+    await postInformix(sql1)
   }
 }

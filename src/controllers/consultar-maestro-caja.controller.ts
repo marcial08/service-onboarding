@@ -11,7 +11,7 @@ export const consultarMaestroCaja = async (req: Request, res: Response) => {
     const { inicioCorrecto, token } = responseLogin;
     if (inicioCorrecto) {
     req.body.token = token
-    req.body.Usuario = process.env.USER_ONBOARDING
+    req.body.Usuario = config.USER_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_CONSULTAR_MAESTRO_C')
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,

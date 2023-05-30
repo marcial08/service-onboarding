@@ -12,11 +12,8 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
     const { inicioCorrecto, token } = responseLogin;
     if (inicioCorrecto) {
     req.body.token = token
-    req.body.Usuario = process.env.USER_ONBOARDING
-
-    
+    req.body.Usuario = config.USER_ONBOARDING
       let dataReq = constructorMaestro(req)
-
       const reqBodyFinal = await armadoReqQuery(dataReq)
       const response = await postOnboarding(reqBodyFinal.body, 'ENDPOINT_GUARDAR_MAESTRO_C')
 
@@ -78,9 +75,6 @@ export const guardarMaestroCaja = async (req: Request, res: Response) => {
 
 const constructorMaestro = (req: any) => {
   const { codigoCliente } = req.body
-  req.body.token = process.env.TOKEN_ONBOARDING
-  req.body.Usuario = process.env.USER_ONBOARDING
-
   req.body.metodo = varDefaulGuardarMaestroCaja.metodo
   req.body.tipoCuenta = varDefaulGuardarMaestroCaja.tipoCuenta
   req.body.codigoMoneda = varDefaulGuardarMaestroCaja.codigoMoneda

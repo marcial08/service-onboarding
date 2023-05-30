@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const PostGuardarAgendaSchema = z.object({
   body: z
     .object({
-      metodo: z.literal('guardarAgenda', { invalid_type_error: 'Error de dato' }),
+      metodo: z.string(),
       Usuario: z.string(),
       TipoCliente: z.string(),
       PrimerNombre: z.string(),

@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import messageUtil from '../util/message.util'
-import { postOnboarding } from '../api/onboarding.api'
+import { postInformix, postOnboarding } from '../api/onboarding.api'
 import { inicioSesion } from './inicio-sesion.controller'
+import config from '../util/config'
 
 // * Consultar Agenda
 export const buscarCliente = async (req: Request, res: Response) => {
@@ -10,8 +11,9 @@ export const buscarCliente = async (req: Request, res: Response) => {
     const { inicioCorrecto, token } = responseLogin;
     if (inicioCorrecto) {
     req.body.token = token
-    req.body.Usuario = process.env.USER_ONBOARDING
+    req.body.Usuario = config.USER_ONBOARDING
     const response = await postOnboarding(req.body, 'ENDPOINT_BUSQUEDA_CLIENTE')
+    await updateDatosAdicionales(req.body.CodCliente)
     return res.status(200).json({
       mensaje: messageUtil.MENSAJE_CORRECTO,
       status: messageUtil.STATUS_OK,
@@ -34,5 +36,21 @@ export const buscarCliente = async (req: Request, res: Response) => {
         }
       })
     }
+  }
+}
+
+export const updateDatosAdicionales = async (codcliente: string) => {
+  
+  
+
+  const codClienteRes = codcliente? codcliente: null
+  
+  if (codClienteRes) {
+    let sql1 = {
+      dataSql: [
+        `update gbdac set gbdaccncn= 98, gbdacpaip=1 where gbdaccage = ${codClienteRes}`
+      ]
+    }
+    await postInformix(sql1)
   }
 }
