@@ -13,6 +13,7 @@ export const consultarAgenda = async (req: Request, res: Response) => {
     if (inicioCorrecto) {
     req.body.token = token
     req.body.Usuario = config.USER_ONBOARDING
+    console.log('consulta agends',req.body);
     const response = await postOnboarding(req.body, 'ENDPOINT_CONSULTA_AGENDA')
     console.log('daos ',response.data );
     await updateDatosAdicionales(response.data.codcliente)
